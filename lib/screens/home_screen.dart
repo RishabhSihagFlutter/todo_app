@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:todo_app/screens/todo_list_screen.dart';
 import 'package:todo_app/screens/categories_screen.dart';
 import 'package:todo_app/screens/statistics_screen.dart';
@@ -25,29 +26,56 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() => _selectedIndex = index);
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.task_alt),
-            label: 'Tasks',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: Colors.black.withOpacity(.1),
+            )
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+            child: GNav(
+              rippleColor: Colors.grey[300]!,
+              hoverColor: Colors.grey[100]!,
+              gap: 8,
+              activeColor: Theme.of(context).colorScheme.primary,
+              iconSize: 24,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: const Duration(milliseconds: 400),
+              tabBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              color: Colors.grey,
+              tabs: const [
+                GButton(
+                  icon: Icons.task_alt,
+                  text: 'Tasks',
+                ),
+                GButton(
+                  icon: Icons.category,
+                  text: 'Categories',
+                ),
+                GButton(
+                  icon: Icons.bar_chart,
+                  text: 'Statistics',
+                ),
+                GButton(
+                  icon: Icons.settings,
+                  text: 'Settings',
+                ),
+              ],
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.category),
-            label: 'Categories',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.bar_chart),
-            label: 'Statistics',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
+        ),
       ),
     );
   }
